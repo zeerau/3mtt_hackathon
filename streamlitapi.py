@@ -14,6 +14,6 @@ def main():
     if st.button('Predict'):
         makeprediction = model.predict([[N,P,K,ph]])
         output = makeprediction[0]
-        st.success('You can grow {} is your field'.format(output))
+        st.success('You can grow {} in your field'.format(output))
 if __name__ == '__main__':
         main()
