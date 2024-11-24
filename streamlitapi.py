@@ -6,10 +6,10 @@ model = pickle.load(open('crop_prediction_model.pkl','rb'))
 def main():
     st.title('Crop Type Predictor')
 
-    N = st.text_input('N')
-    P = st.text_input('P')
-    K = st.text_input('K')
-    ph = st.text_input('ph')
+    N = st.text_input('Nitrogen')
+    P = st.text_input('Phosphorous')
+    K = st.text_input('Potassium')
+    ph = st.text_input('pH')
 
     if st.button('Predict'):
         makeprediction = model.predict([[N,P,K,ph]])
