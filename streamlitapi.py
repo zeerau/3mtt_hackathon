@@ -1,31 +1,30 @@
 import streamlit as st
 import pickle
 
-# Load the trained model
 model = pickle.load(open('crop_prediction_model.pkl', 'rb'))
+
+def predict_crop(N, P, K, ph):
+    try:
+        input_values = [[float(N), float(P), float(K), float(ph)]]
+        prediction = model.predict(input_values)[0]  # Get the prediction from the array
+        return prediction
+    except ValueError:
+        return "Invalid input. Please enter numeric values."
 
 def main():
     st.title('Crop Type Predictor')
 
-    N = st.text_input('Nitrogen')
-    P = st.text_input('Phosphorous')
-    K = st.text_input('Potassium')
-    ph = st.text_input('pH')
+    N = st.number_input('Nitrogen', value=0.0)  # Use number_input for numeric input
+    P = st.number_input('Phosphorous', value=0.0)
+    K = st.number_input('Potassium', value=0.0)
+    ph = st.number_input('pH', value=0.0)
 
     if st.button('Predict'):
-        # Convert input values to numerical type
-        try:
-            N = float(N)
-            P = float(P)
-            K = float(K)
-            ph = float(ph)
-        except ValueError:
-            st.error("Please enter valid numeric values for all inputs.")
-            return
-        
-        makeprediction = model.predict([[N, P, K, ph]])
-        output = makeprediction[0]  # Extract the prediction from the array
-        st.success('You can grow {} in your field'.format(output))
+        result = predict_crop(N, P, K, ph)
+        if isinstance(result, str):  # Check if result is an error message
+            st.error(result)
+        else:
+            st.success('You can grow {} in your field'.format(result))
 
 if __name__ == '__main__':
     main()
