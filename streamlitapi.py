@@ -2,11 +2,12 @@ import streamlit as st
 import pickle
 
 model = pickle.load(open('crop_prediction_model.pkl', 'rb'))
-
+scaler = pickle.load(open('scaler.pkl', 'rb'))
 def predict_crop(N, P, K, ph):
     try:
         input_values = [[float(N), float(P), float(K), float(ph)]]
-        prediction = model.predict(input_values)[0]  # Get the prediction from the array
+        scaled_input = scaler.transform(input_values)  
+        prediction = model.predict(scaled_input)[0] 
         return prediction
     except ValueError:
         return "Invalid input. Please enter numeric values."
